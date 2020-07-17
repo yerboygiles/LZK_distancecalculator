@@ -30,13 +30,26 @@ def distance2(maxx, minx, maxy, miny):
     return LateralDistance, Distance, OffCenterX, OffCenterY
 
 # this is the only one that works, has golden number(my number)
+
 def distance3(maxx, minx, maxy, miny):
     THEODORS_NUMBER = 0.0516657316
     SizeX = (maxx - minx)
     SizeY = (maxy - miny)
     OffCenterX = int(maxx - (SizeX / 2)) - int(imageWidth / 2)
     OffCenterY = int(maxy - (SizeY / 2)) - int(imageHeight / 2)
-    Distance = (TARGETYSIZEMM * FOCALLENGTH) / SizeY
-    Distance = Distance/THEODORS_NUMBER
+
+    LateralDistance = (TARGETYSIZE * FOCALLENGTH) / SizeY
+    LateralDistance = LateralDistance/THEODORS_NUMBER
+
+    Apx = SizeY
+    Amm = 72.8
+    MM__PX = Apx/Amm
+    Bpx = math.sqrt(pow(OffCenterX, 2) + pow(OffCenterY, 2))
+    Bmm = Bpx*MM__PX
+    Cpx = math.sqrt(pow(Bpx, 2) + pow(Apx, 2))
+    Cmm = Cpx*MM__PX
+    
+    Distance = math.sqrt(pow(Cmm, 2) + pow(LateralDistance, 2))
+    
     return LateralDistance, Distance, OffCenterX, OffCenterY
 
